@@ -34,6 +34,7 @@ use Lunar\Base\PricingManagerInterface;
 use Lunar\Base\ShippingManifest;
 use Lunar\Base\ShippingManifestInterface;
 use Lunar\Base\ShippingModifiers;
+use Lunar\Base\StorefrontSessionInterface;
 use Lunar\Base\TaxManagerInterface;
 use Lunar\Console\Commands\AddonsDiscover;
 use Lunar\Console\Commands\Import\AddressData;
@@ -50,6 +51,7 @@ use Lunar\Managers\CartSessionManager;
 use Lunar\Managers\DiscountManager;
 use Lunar\Managers\PaymentManager;
 use Lunar\Managers\PricingManager;
+use Lunar\Managers\StorefrontSessionManager;
 use Lunar\Managers\TaxManager;
 use Lunar\Models\Address;
 use Lunar\Models\CartLine;
@@ -115,6 +117,10 @@ class LunarServiceProvider extends ServiceProvider
 
         $this->app->singleton(OrderModifiers::class, function () {
             return new OrderModifiers();
+        });
+
+        $this->app->singleton(StorefrontSessionInterface::class, function ($app) {
+            return $app->make(StorefrontSessionManager::class);
         });
 
         $this->app->singleton(CartSessionInterface::class, function ($app) {
