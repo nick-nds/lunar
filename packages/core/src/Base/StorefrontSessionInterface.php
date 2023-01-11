@@ -4,6 +4,7 @@ namespace Lunar\Base;
 
 use Lunar\Models\Channel;
 use Lunar\Models\Currency;
+use Lunar\Models\CustomerGroup;
 
 interface StorefrontSessionInterface
 {
@@ -31,6 +32,15 @@ interface StorefrontSessionInterface
     public function setCurrency(Currency $currency);
 
     /**
+     * Set the store front session customer group
+     *
+     * @param CustomerGroup $customerGroup
+     *
+     * @return void
+     */
+    public function setCustomerGroup(CustomerGroup $customerGroup);
+
+    /**
      * Return the current currency.
      *
      * @return \Lunar\Models\Currency
@@ -43,4 +53,11 @@ interface StorefrontSessionInterface
      * @return \Lunar\Models\Channel
      */
     public function getChannel(): Channel;
+
+    /**
+     * Return the current customer group
+     *
+     * @return CustomerGroup
+     */
+    public function getCustomerGroup(): CustomerGroup;
 }
