@@ -65,4 +65,22 @@ trait HasChannels
             );
         });
     }
+
+    public function scopeChannel($query, $channel = null)
+    {
+        if (!$channel) {
+            return $query;
+        }
+
+        if (is_a($channel, Channel::class)) {
+            $channel = collect([$channel]);
+        }
+        return $query->whereHas('channels', function ($relation) use ($channel) {
+            $relation->whereIn(
+                $this->channels()->getTable() . '.channel_id',
+                $channel->pluck('id')
+            )->whereDate('starts_at', '<=', now())
+            ->whereEnabled(true);
+        });
+    }
 }
