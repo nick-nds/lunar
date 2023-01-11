@@ -74,6 +74,7 @@ class SetStaffAuthMiddlewareListener
         return Str::of($this->event->route->name)->contains([
             'login',
             'password-reset',
+            'storefront',
         ]);
     }
 
