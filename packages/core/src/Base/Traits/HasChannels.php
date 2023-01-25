@@ -75,12 +75,16 @@ trait HasChannels
         if (is_a($channel, Channel::class)) {
             $channel = collect([$channel]);
         }
+
+        // TODO: Handle null starts at...
         return $query->whereHas('channels', function ($relation) use ($channel) {
             $relation->whereIn(
                 $this->channels()->getTable() . '.channel_id',
                 $channel->pluck('id')
-            )->whereDate('starts_at', '<=', now())
-            ->whereEnabled(true);
+            )->where(function ($query) {
+                $query->whereNull('starts_at')
+                    ->orWhere('starts_at', '<=', now());
+            })->whereEnabled(true);
         });
     }
 }
