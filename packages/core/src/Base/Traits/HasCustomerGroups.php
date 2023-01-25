@@ -3,6 +3,7 @@
 namespace Lunar\Base\Traits;
 
 use DateTime;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Lunar\Models\CustomerGroup;
@@ -17,6 +18,16 @@ trait HasCustomerGroups
      * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
     abstract public function customerGroups(): Relation;
+
+    /**
+     * Apply customer group scope.
+     *
+     * @param Builder $query
+     * @param Collection $customerGroups
+     *
+     * @return void
+     */
+    abstract public function applyCustomerGroupScope(Builder $query, $customerGroups);
 
     /**
      * Schedule models against customer groups.
@@ -67,5 +78,18 @@ trait HasCustomerGroups
                 return false;
             }
         }
+    }
+
+    public function scopeCustomerGroup($query, $customerGroup = null)
+    {
+        if (!$customerGroup) {
+            return $query;
+        }
+
+        if (is_a($customerGroup, CustomerGroup::class)) {
+            $customerGroup = collect([$customerGroup]);
+        }
+
+        return $this->applyCustomerGroupScope($query, $customerGroup);
     }
 }
