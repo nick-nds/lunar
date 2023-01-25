@@ -2,7 +2,6 @@
 
 namespace Lunar\Managers;
 
-use Closure;
 use Illuminate\Session\SessionManager;
 use Lunar\Base\StorefrontSessionInterface;
 use Lunar\Models\Channel;
@@ -11,10 +10,25 @@ use Lunar\Models\CustomerGroup;
 
 class StorefrontSessionManager implements StorefrontSessionInterface
 {
+    /**
+     * The current channel
+     *
+     * @var Channel|null
+     */
     protected ?Channel $channel = null;
 
+    /**
+     * The current customer group.
+     *
+     * @var CustomerGroup
+     */
     protected ?CustomerGroup $customerGroup = null;
 
+    /**
+     * Initialise the manager
+     *
+     * @param protected SessionManager
+     */
     public function __construct(
         protected SessionManager $sessionManager
     ) {
@@ -32,15 +46,18 @@ class StorefrontSessionManager implements StorefrontSessionInterface
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function initCustomerGroup()
     {
-        if ($this->customerGroup) {
-            return $this->customerGroup;
-        }
-
         $handle = $this->sessionManager->get(
             $this->getSessionKey().'_customer_group'
         );
+
+        if ($this->customerGroup && $this->customerGroup->handle == $handle) {
+            return $this->customerGroup;
+        }
 
         if (!$handle) {
             return $this->setCustomerGroup(
@@ -59,6 +76,9 @@ class StorefrontSessionManager implements StorefrontSessionInterface
         return $this->setCustomerGroup($model);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function initChannel()
     {
         if ($this->channel) {
@@ -91,7 +111,7 @@ class StorefrontSessionManager implements StorefrontSessionInterface
      */
     public function getSessionKey()
     {
-        return config('lunar.cart.session_key');
+        return 'lunar_storefront';
     }
 
     /**
@@ -116,7 +136,23 @@ class StorefrontSessionManager implements StorefrontSessionInterface
             $this->getSessionKey().'_customer_group',
             $customerGroup->handle
         );
+
         $this->customerGroup = $customerGroup;
+        return $this;
+    }
+
+    /**
+     * Reset the customer group
+     *
+     * @return self
+     */
+    public function resetCustomerGroup()
+    {
+        $this->sessionManager->forget(
+            $this->getSessionKey().'_customer_group'
+        );
+        $this->customerGroup = null;
+
         return $this;
     }
 
