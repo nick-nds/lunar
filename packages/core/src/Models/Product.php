@@ -2,6 +2,7 @@
 
 namespace Lunar\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -256,5 +257,34 @@ class Product extends BaseModel implements SpatieHasMedia
     public function brand()
     {
         return $this->belongsTo(Brand::class);
+    }
+
+    /**
+     * Apply the status scope
+     *
+     * @param Builder $query
+     * @param string $status
+     *
+     * @return void
+     */
+    public function scopeStatus(Builder $query, $status)
+    {
+        $query->whereStatus($status);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function applyCustomerGroupScope(Builder $query, $customerGroups)
+    {
+        $query->whereHas('customerGroups', function ($relation) use ($customerGroups) {
+            $relation->whereIn(
+                $this->customerGroups()->getTable() . '.customer_group_id',
+                $customerGroups->pluck('id')
+            )->where(function ($query) {
+                $query->whereNull('starts_at')
+                    ->orWhere('starts_at', '<=', now());
+            })->whereEnabled(true);
+        });
     }
 }
