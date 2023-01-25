@@ -127,4 +127,9 @@ class Discount extends BaseModel
                     ->orWhere('ends_at', '>', now());
             });
     }
+
+    public function applyCustomerGroupScope($query, $customerGroups)
+    {
+
+    }
 }

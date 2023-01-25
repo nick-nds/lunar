@@ -166,4 +166,9 @@ class Collection extends BaseModel implements SpatieHasMedia
             'ends_at',
         ])->withTimestamps();
     }
+
+    public function applyCustomerGroupScope(Builder $query, $customerGroups)
+    {
+
+    }
 }
