@@ -176,6 +176,16 @@ class Product extends BaseModel implements SpatieHasMedia
         return $this->hasMany(ProductAssociation::class, 'product_target_id');
     }
 
+    public function prices()
+    {
+        return $this->hasManyThrough(
+            Price::class,
+            ProductVariant::class,
+            'product_id',
+            'priceable_id'
+        )->wherePriceableType(ProductVariant::class);
+    }
+
     /**
      * Associate a product to another with a type.
      *
@@ -224,6 +234,15 @@ class Product extends BaseModel implements SpatieHasMedia
         }
 
         $data['skus'] = $this->variants()->pluck('sku')->toArray();
+
+        $data['collectionIds'] = $this->collections->pluck('id');
+        $data['customerGroupIds'] = $this->customerGroups()
+        ->wherePivot('enabled', true)
+        ->toBase()
+        ->get()
+        ->pluck('customer_group_id')->values();
+
+        $data['default_slug'] = $this->defaultUrl->slug;
 
         return $data;
     }
