@@ -98,18 +98,19 @@ class Tags extends Component
             return collect();
         }
 
-        return DB::table(
+        return DB::connection(config('lunar.database.connection'))
+        ->table(
             config('lunar.database.table_prefix').'taggables'
         )->join($tagTable, 'tag_id', '=', "{$tagTable}.id")
-        ->whereTaggableType(
-            get_class($this->taggable)
-        )
-        ->distinct()
-        ->where('value', 'LIKE', "%{$this->searchTerm}%")
-        ->pluck('value')
-        ->filter(function ($value) {
-            return ! in_array($value, $this->tags);
-        });
+            ->whereTaggableType(
+                $this->taggable->getMorphClass()
+            )
+            ->distinct()
+            ->where('value', 'LIKE', "%{$this->searchTerm}%")
+            ->pluck('value')
+            ->filter(function ($value) {
+                return ! in_array($value, $this->tags);
+            });
     }
 
     /**

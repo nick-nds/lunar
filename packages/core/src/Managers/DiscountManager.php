@@ -80,8 +80,7 @@ class DiscountManager implements DiscountManagerInterface
             throw new InvalidArgumentException(
                 __('lunar::exceptions.discounts.invalid_type', [
                     'expected' => Channel::class,
-                    'actual' => get_class($nonChannel),
-
+                    'actual' => $nonChannel->getMorphClass(),
                 ])
             );
         }
@@ -107,7 +106,7 @@ class DiscountManager implements DiscountManagerInterface
             throw new InvalidArgumentException(
                 __('lunar::exceptions.discounts.invalid_type', [
                     'expected' => CustomerGroup::class,
-                    'actual' => get_class($nonGroup),
+                    'actual' => $nonGroup->getMorphClass(),
                 ])
             );
         }
@@ -157,15 +156,15 @@ class DiscountManager implements DiscountManagerInterface
             $joinTable = (new Discount)->customerGroups()->getTable();
 
             $query->whereIn("{$joinTable}.customer_group_id", $this->customerGroups->pluck('id'))
-            ->where("{$joinTable}.enabled", true)
-            ->where(function ($query) use ($joinTable) {
-                $query->whereNull("{$joinTable}.starts_at")
-                    ->orWhere("{$joinTable}.starts_at", '<=', now());
-            })
-            ->where(function ($query) use ($joinTable) {
-                $query->whereNull("{$joinTable}.ends_at")
-                    ->orWhere("{$joinTable}.ends_at", '>', now());
-            });
+                ->where("{$joinTable}.enabled", true)
+                ->where(function ($query) use ($joinTable) {
+                    $query->whereNull("{$joinTable}.starts_at")
+                        ->orWhere("{$joinTable}.starts_at", '<=', now());
+                })
+                ->where(function ($query) use ($joinTable) {
+                    $query->whereNull("{$joinTable}.ends_at")
+                        ->orWhere("{$joinTable}.ends_at", '>', now());
+                });
         })->orderBy('priority')->get();
     }
 

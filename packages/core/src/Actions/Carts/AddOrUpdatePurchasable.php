@@ -40,7 +40,7 @@ class AddOrUpdatePurchasable extends AbstractAction
 
         $cart->lines()->create([
             'purchasable_id' => $purchasable->id,
-            'purchasable_type' => get_class($purchasable),
+            'purchasable_type' => $purchasable->getMorphClass(),
             'quantity' => $quantity,
             'meta' => $meta,
         ]);
