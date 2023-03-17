@@ -19,10 +19,11 @@ class GetUnitPrice
     {
         $purchasable = $cartLine->purchasable;
         $cart = $cartLine->cart;
+        $user = $cart->user;
 
         $customerGroups = collect();
 
-        if ($user = Auth::user()) {
+        if ($user) {
             $customerGroups = $user->customers->first()?->customerGroups;
         }
 
