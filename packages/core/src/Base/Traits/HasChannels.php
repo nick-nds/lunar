@@ -45,6 +45,17 @@ trait HasChannels
         ])->withTimestamps();
     }
 
+    public function activeChannels()
+    {
+        return $this->channels()->where(function ($query) {
+            $query->whereNull('starts_at')
+                ->orWhere('starts_at', '<=', now());
+        })->where(function ($query) {
+            $query->whereNull('ends_at')
+            ->orWhere('ends_at', '>=', now());
+        })->whereEnabled(true);
+    }
+
     public function scheduleChannel($channel, DateTime $startsAt = null, DateTime $endsAt = null)
     {
         if ($channel instanceof Model) {
