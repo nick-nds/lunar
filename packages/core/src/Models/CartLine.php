@@ -3,6 +3,7 @@
 namespace Lunar\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Collection;
 use Lunar\Base\BaseModel;
 use Lunar\Base\Traits\CachesProperties;
 use Lunar\Base\Traits\HasMacros;
@@ -70,6 +71,13 @@ class CartLine extends BaseModel
      * @var null|Price
      */
     public ?Price $discountTotal = null;
+
+    /**
+     * The cart line discounts.
+     *
+     * @var null|Collection<Discount>
+     */
+    public ?Collection $discounts = null;
 
     /**
      * The cart line tax amount.

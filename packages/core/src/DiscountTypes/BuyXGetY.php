@@ -157,6 +157,12 @@ class BuyXGetY extends AbstractDiscountType
                 1
             );
 
+            if (!$rewardLine->discounts) {
+                $rewardLine->discounts = collect();
+            }
+
+            $rewardLine->discounts->push($this);
+
             if (! $cart->freeItems) {
                 $cart->freeItems = collect();
             }

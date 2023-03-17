@@ -101,6 +101,12 @@ class AmountOff extends AbstractDiscountType
                 1
             );
 
+            if (!$line->discounts) {
+                $line->discounts = collect();
+            }
+
+            $line->discounts->push($this);
+
             $affectedLines->push(new DiscountBreakdownLine(
                 line: $line,
                 quantity: $line->quantity
@@ -128,6 +134,8 @@ class AmountOff extends AbstractDiscountType
                 1
             );
         }
+
+
 
         if (! $cart->discounts) {
             $cart->discounts = collect();
@@ -218,6 +226,12 @@ class AmountOff extends AbstractDiscountType
                 $cart->currency,
                 1
             );
+
+            if (!$line->discounts) {
+                $line->discounts = collect();
+            }
+
+            $line->discounts->push($this);
 
             $affectedLines->push(new DiscountBreakdownLine(
                 line: $line,
