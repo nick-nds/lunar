@@ -61,7 +61,7 @@ class DiscountPurchasable extends BaseModel
      */
     public function purchasable()
     {
-        return $this->morphTo();
+        return $this->morphTo()->withTrashed();
     }
 
     public function scopeCondition(Builder $query)
