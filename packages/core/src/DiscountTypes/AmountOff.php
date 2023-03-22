@@ -203,6 +203,10 @@ class AmountOff extends AbstractDiscountType
         $affectedLines = collect();
         $totalDiscount = 0;
 
+        if (!$value) {
+            return $cart;
+        }
+
         foreach ($lines as $line) {
             $subTotal = $line->subTotal->value;
             $subTotalDiscounted = $line->subTotalDiscounted?->value ?: 0;
