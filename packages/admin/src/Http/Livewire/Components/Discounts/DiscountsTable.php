@@ -70,6 +70,6 @@ class DiscountsTable extends Table
      */
     public function getData()
     {
-        return Discount::paginate($this->perPage);
+        return Discount::orderBy('created_at', 'desc')->paginate($this->perPage);
     }
 }
