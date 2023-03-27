@@ -63,7 +63,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Lunar\\Api\\ApiHubServiceProvider",
+                "Lunar\\Api\\ApiServiceProvider",
                 "Lunar\\LivewireTables\\LivewireTablesServiceProvider",
                 "Lunar\\ScoutDatabaseEngine\\ScoutDatabaseServiceProvider",
                 "Lunar\\Hub\\AdminHubServiceProvider",
