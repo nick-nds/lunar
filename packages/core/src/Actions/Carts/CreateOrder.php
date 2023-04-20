@@ -33,6 +33,7 @@ class CreateOrder extends AbstractAction
                 'discount_total' => $cart->discountTotal?->value,
                 'discount_breakdown' => [],
                 'shipping_total' => $cart->shippingTotal?->value ?: 0,
+                'shipping_breakdown' => $cart->shippingBreakdown,
                 'tax_breakdown' => $cart->taxBreakdown->map(function ($tax) {
                     return [
                         'description' => $tax['description'],
