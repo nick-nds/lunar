@@ -4,7 +4,7 @@
     "keywords": ["lunar", "laravel", "ecommerce", "e-commerce", "headless", "store", "shop", "cart"],
     "type": "library",
     "license": "MIT",
-    "minimum-stability": "beta",
+    "minimum-stability": "dev",
     "authors": [
         {
           "name": "Lunar",
@@ -14,7 +14,8 @@
     "autoload": {
         "psr-4": {
             "Lunar\\Hub\\": "src",
-            "Lunar\\Hub\\Database\\Factories\\": "database/factories"
+            "Lunar\\Hub\\Database\\Factories\\": "database/factories",
+            "Lunar\\Hub\\Tests\\": "tests"
         },
         "files": [
             "src/helpers.php"
@@ -22,7 +23,6 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Lunar\\Hub\\Tests\\": "tests"
         }
     },
     "extra": {

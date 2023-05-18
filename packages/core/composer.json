@@ -15,7 +15,8 @@
             "Lunar\\": "src",
             "Lunar\\Database\\Factories\\": "database/factories",
             "Lunar\\Database\\Seeders\\": "database/seeders",
-            "Lunar\\Database\\State\\": "database/state"
+            "Lunar\\Database\\State\\": "database/state",
+            "Lunar\\Tests\\": "tests"
         },
         "files": [
             "src/helpers.php"
@@ -23,7 +24,6 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Lunar\\Tests\\": "tests"
         }
     },
     "extra": {
